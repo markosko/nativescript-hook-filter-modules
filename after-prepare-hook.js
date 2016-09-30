@@ -61,7 +61,7 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 				if(item.indexOf("nativescript-")>-1 && item.indexOf(DirInclude)==-1){
 						delFolder=false;
 				}
-				if(item.indexOf(DirInclude)>-1){
+				if(DirInclude.indexOf(item)>-1){
 					delFolder=true;
 				}
 				if(delFolder){

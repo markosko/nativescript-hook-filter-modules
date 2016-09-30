@@ -1,6 +1,12 @@
 {
     "to_be_deleted": [
-        "connectivity"
+    "connectivity",
+    "camera",
+    "console",
+    "fetch",
+    "fps-meter",
+    "timer",
+    "trace"
     ],
     "to_be_kept": [
 
