@@ -27,6 +27,13 @@
     "name": "Marek Maszay",
     "email": "markosko.mm@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Brad Martin",
+      "email": "bradwaynemartin@gmail.com",
+      "url": "https://github.com/bradmartin"
+    }
+  ],
   "license": {
     "type": "MIT",
     "url": "https://github.com/markosko/nativescript-hook-filter-modules/blob/master/LICENSE"
