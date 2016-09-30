@@ -1,9 +1,8 @@
-//array of excluded folders from deleting
 {
-    "include":[
-
+    "to_be_deleted": [
+        "connectivity"
     ],
-    "exclude":[
+    "to_be_kept": [
 
     ]
 }

@@ -52,16 +52,17 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 
         
 		try{
-			console.log(platformAppDir,projectDir);
 			var dirs=getDirectories(platformAppDir);
 			var JSONFilterFiles=readPackageJson(projectDir);
-
-			DirExclude.concat(JSONFilterFiles.exclude);
-			DirInclude.concat(JSONFilterFiles.include);
+			DirExclude=DirExclude.concat(JSONFilterFiles.to_be_kept);
+			DirInclude=DirInclude.concat(JSONFilterFiles.to_be_deleted);
 			dirs.forEach(function(item,index){
 				var delFolder = DirExclude.indexOf(item)==-1;
 				if(item.indexOf("nativescript-")>-1 && item.indexOf(DirInclude)==-1){
 						delFolder=false;
+				}
+				if(item.indexOf(DirInclude)>-1){
+					delFolder=true;
 				}
 				if(delFolder){
 					var delPath=path.join(platformAppDir, item);
@@ -91,7 +92,7 @@ function getDirectories(srcpath) {
 }
 
 function readPackageJson(dir) {
-    var packageJson = path.join(dir, "nativescript-filter-modules.json");
+    var packageJson = path.join(dir, "filter-modules.json");
     if (shelljs.test("-f", packageJson)) {
         return JSON.parse(shelljs.cat(packageJson));
     } else {
