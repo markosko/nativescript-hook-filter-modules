@@ -1,0 +1,9 @@
+//array of excluded folders from deleting
+{
+    "include":[
+
+    ],
+    "exclude":[
+
+    ]
+}

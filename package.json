@@ -1,0 +1,56 @@
+{
+  "name": "nativescript-hook-filter-modules",
+  "version": "1.0.0",
+  "description": "Shrinking size of application by deleting unchosen node_modules inside tns_modules",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "nativescript": {
+    "hooks": [
+      {
+        "type": "after-prepare",
+        "script": "after-prepare-hook.js",
+        "inject": true
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markosko/nativescript-hook-filter-modules.git"
+  },
+  "keywords": [
+    "NativeScript",
+    "nativescript-hook-filter-modules",
+    "nativescript",
+    "nativescript-hook",
+    "shrinking"
+  ],
+  "author": {
+    "name": "Marek Maszay",
+    "email": "markosko.mm@gmail.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/markosko/nativescript-hook-filter-modules/blob/master/LICENSE"
+  },
+  "bugs": {
+    "url": "https://github.com/markosko/nativescript-hook-filter-modules/issues"
+  },
+  "homepage": "https://github.com/markosko/nativescript-hook-filter-modules",
+  "readmeFilename": "README.md",
+  "scripts": {
+    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
+    "demo.android": "npm run preparedemo && cd demo && tns run android",
+    "debug.ios": "npm run preparedemo && cd demo && tns debug ios --emulator",
+    "debug.android": "npm run preparedemo && cd demo && tns debug android --emulator",
+    "preparedemo": "cd demo && tns plugin remove nativescript-hook-filter-modules && tns plugin add .. && tns install",
+    "setup": "cd demo && npm install && tns plugin add .. && cd ..",
+    "start": "npm run demo.android",
+    "postinstall": "node postinstall.js",
+    "preuninstall": "node preuninstall.js"
+  },
+  "devDependencies": {
+    "nativescript-hook": "^0.2.1",
+    "rmdir": "^1.2.0",
+    "shelljs": "^0.7.4"
+  }
+}
