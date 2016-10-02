@@ -1,9 +1,10 @@
 var path = require("path");
 var shelljs = require("shelljs");
 var fs = require('fs');
-var rmdir = require('rmdir');
+var findRemoveSync = require('find-remove')
 module.exports = function (logger, platformsData, projectData, hookArgs) {
 
+	var deletedFileCounter=0;
 	
     var projectDir = projectData.projectDir;
     var platform = hookArgs.platform.toLowerCase();
@@ -15,7 +16,10 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 	platformAppDir = path.join(platformAppDir, "tns_modules");
     process.env.PLATFORM_DIR = platformOutDir;
 
-	var DirExclude=[
+	var SubDirs_to_be_kept=[];
+	var SubDirs_to_be_deleted=[];
+
+	var Dirs_to_be_kept=[
 		"application",
 		"application-settings",
 		"camera",
@@ -45,7 +49,7 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 		"xml",
 		"tns-core-modules-widgets"
 	];
-	var DirInclude=[
+	var Dirs_to_be_deleted=[
 		"nativescript-hook-filter-modules"
 	];
 
@@ -54,26 +58,44 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 		try{
 			var dirs=getDirectories(platformAppDir);
 			var JSONFilterFiles=readPackageJson(projectDir);
-			DirExclude=DirExclude.concat(JSONFilterFiles.to_be_kept);
-			DirInclude=DirInclude.concat(JSONFilterFiles.to_be_deleted);
+			Dirs_to_be_kept=Dirs_to_be_kept.concat(JSONFilterFiles.to_be_kept);
+			Dirs_to_be_deleted=Dirs_to_be_deleted.concat(JSONFilterFiles.to_be_deleted);
+
+
+			Dirs_to_be_deleted.forEach(function(item){
+				if(item.indexOf("/")>-1){
+					SubDirs_to_be_deleted.push(item);
+				}
+			});
+
 			dirs.forEach(function(item,index){
-				var delFolder = DirExclude.indexOf(item)==-1;
-				if(item.indexOf("nativescript-")>-1 && item.indexOf(DirInclude)==-1){
+				var delFolder = Dirs_to_be_kept.indexOf(item)==-1;
+				if(item.indexOf("nativescript-")>-1 && item.indexOf(Dirs_to_be_deleted)==-1){
 						delFolder=false;
 				}
-				if(DirInclude.indexOf(item)>-1){
+				if(Dirs_to_be_deleted.indexOf(item)>-1){
 					delFolder=true;
 				}
 				if(delFolder){
 					var delPath=path.join(platformAppDir, item);
-					rmdir(delPath,function(err, dirs, files) {
-						  //console.log(err);
-						  //console.log(dirs);
-						  //console.log(files);
-						  console.log('all files are removed');
-					});
+					var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
+					console.log(result);	
+					fs.rmdirSync(path.join(platformAppDir, item));				
 				}
 			});
+
+			SubDirs_to_be_deleted.forEach(function(item){
+				var delPath=path.join(platformAppDir, item);
+				var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
+				console.log(result);
+				fs.rmdirSync(path.join(platformAppDir, item));
+			});
+
+			var result = findRemoveSync(platformAppDir, {extensions: ['.d.ts','.md','.MD']});
+			
+			if(result!=={})console.log(result);
+			var result = findRemoveSync(platformAppDir, {files: ['LICENSE','.gitignore','.npmignore','package.json']});
+			if(result!=={})console.log(result);
 
 		}catch(e){
 			console.log(e);

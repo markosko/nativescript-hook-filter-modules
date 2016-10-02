@@ -1,6 +1,6 @@
 {
   "name": "nativescript-hook-filter-modules",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shrinking size of application by deleting unchosen node_modules inside tns_modules",
   "main": "index.js",
   "nativescript": {
@@ -25,7 +25,8 @@
   ],
   "author": {
     "name": "Marek Maszay",
-    "email": "markosko.mm@gmail.com"
+    "email": "markosko.mm@gmail.com",
+    "url": "https://github.com/markosko"
   },
   "contributors": [
     {
@@ -55,8 +56,8 @@
     "preuninstall": "node preuninstall.js"
   },
   "dependencies": {
+    "find-remove": "^1.0.0",
     "nativescript-hook": "^0.2.1",
-    "rmdir": "^1.2.0",
     "shelljs": "^0.7.4"
   }
 }
