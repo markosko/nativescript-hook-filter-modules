@@ -47,7 +47,14 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 		"utils",
 		"xhr",
 		"xml",
-		"tns-core-modules-widgets"
+		"tns-core-modules-widgets",
+		"@angular",
+		"nativescript-angular",
+		"nativescript-intl",
+		"reflect-metadata",
+		"zone.js",
+		"rxjs",
+		"parse5"
 	];
 	var Dirs_to_be_deleted=[
 		"nativescript-hook-filter-modules"
@@ -69,6 +76,7 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 			});
 
 			dirs.forEach(function(item,index){
+				if(item=="trace")return;
 				var delFolder = Dirs_to_be_kept.indexOf(item)==-1;
 				if(item.indexOf("nativescript-")>-1 && item.indexOf(Dirs_to_be_deleted)==-1){
 						delFolder=false;
@@ -85,18 +93,19 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 			});
 
 			SubDirs_to_be_deleted.forEach(function(item){
+				if(item=="trace")return;
 				var delPath=path.join(platformAppDir, item);
 				var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
 				console.log(result);
 				fs.rmdirSync(path.join(platformAppDir, item));
 			});
-
-			var result = findRemoveSync(platformAppDir, {extensions: ['.d.ts','.md','.MD']});
 			
-			if(result!=={})console.log(result);
-			var result = findRemoveSync(platformAppDir, {files: ['LICENSE','.gitignore','.npmignore','package.json']});
-			if(result!=={})console.log(result);
-
+			result = findRemoveSync(path.join(platformOutDir, "app"), {extensions: ['.ts','.md','.MD','.map']});
+			
+			if(result!={})console.log(result);
+			result = findRemoveSync(path.join(platformOutDir, "app"), {files: ['LICENSE','.gitignore','.npmignore']});
+			if(result!={})console.log(result);
+			
 		}catch(e){
 			console.log(e);
 			console.log('Shrinking failed.');
