@@ -1,6 +1,6 @@
 {
   "name": "nativescript-hook-filter-modules",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Shrinking size of built application by deleting defined set of node_modules inside tns_modules",
   "main": "index.js",
   "nativescript": {

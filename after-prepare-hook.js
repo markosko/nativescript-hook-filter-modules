@@ -78,7 +78,7 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 			dirs.forEach(function(item,index){
 				if(item=="trace")return;
 				var delFolder = Dirs_to_be_kept.indexOf(item)==-1;
-				if(item.indexOf("nativescript-")>-1 && item.indexOf(Dirs_to_be_deleted)==-1){
+				if(item.indexOf("nativescript-")>-1 && item.indexOf("nativescript-dev-")==-1 && item.indexOf(Dirs_to_be_deleted)==-1){
 						delFolder=false;
 				}
 				if(Dirs_to_be_deleted.indexOf(item)>-1){
@@ -86,18 +86,26 @@ module.exports = function (logger, platformsData, projectData, hookArgs) {
 				}
 				if(delFolder){
 					var delPath=path.join(platformAppDir, item);
-					var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
-					console.log(result);	
-					fs.rmdirSync(path.join(platformAppDir, item));				
+					if(fs.existsSync(delPath)){
+						var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
+						console.log(result);       
+						if(fs.existsSync(delPath)){
+							fs.rmdirSync(delPath);
+						}
+					}   		
 				}
 			});
 
 			SubDirs_to_be_deleted.forEach(function(item){
 				if(item=="trace")return;
 				var delPath=path.join(platformAppDir, item);
-				var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
-				console.log(result);
-				fs.rmdirSync(path.join(platformAppDir, item));
+				if(fs.existsSync(delPath)){
+					var result = findRemoveSync(delPath, {dir: "*", files: "*.*"});
+					console.log(result);       
+					if(fs.existsSync(delPath)){
+						fs.rmdirSync(delPath);
+					}
+				} 
 			});
 			
 			result = findRemoveSync(path.join(platformOutDir, "app"), {extensions: ['.ts','.md','.MD','.map']});
